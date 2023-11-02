@@ -126,16 +126,24 @@ class IMemory{
         return host.memory.readMemoryValues(address,size);
     }
 
-    read_int32(address)
+    _bufferNum(address,len)
     {
-        var mem = read_mem(address,4);
-        var buffer = new ArrayBuffer(4);
-        var dataview = new DataView(buffer);
+        var mem = this.read_mem(address,len);
+        var buffer = new ArrayBuffer(len);
+        var uintarray = new Uint8Array(buffer);
+        var dataview = new DataView(uintarray.buffer);
         for(var i =0;i < mem.length;i++)
         {
             dataview.setInt8(i,mem[i],true);
         }
-        return dataview.getInt32(0);
+        uintarray.reverse();
+        return dataview;
+    }
+
+    // little endian
+    read_int32(address)
+    {
+        return this._bufferNum(address,4).getInt32(0);
     }
 
     read_int8(address)
@@ -145,19 +153,12 @@ class IMemory{
 
     read_int16(address)
     {
-        var mem = read_mem(address,2);
-        var buffer = new ArrayBuffer(2);
-        var dataview = new DataView(buffer);
-        for(var i =0;i < mem.length;i++)
-        {
-            dataview.setInt8(i,mem[i],true);
-        }
-        return dataview.getInt16(0);
+        return this._bufferNum(address,2).getInt16(0);
     }
 
     read_int64(address)
     {
-        return read_mem(address,8);
+        return this._bufferNum(address,8);
     }
 
     read_pvoid(address)
@@ -195,6 +196,18 @@ class IMisc{
     }
     writeConsoleLine(msg){
         host.diagnostics.debugLog(`${msg}\n`);
+    }
+    exec(cmd){
+        var result = [];
+        var obj = host.namespace.Debugger.Utility.Control.ExecuteCommand(cmd);
+        // js  of not in
+        for(var l of obj){
+            result.push(l + "\n");
+        }
+        return result;
+    }
+    exec2(cmd){
+        return host.namespace.Debugger.Utility.Control.ExecuteCommand(cmd);
     }
 }
 
