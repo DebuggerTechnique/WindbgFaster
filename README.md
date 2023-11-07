@@ -30,3 +30,12 @@ Let's debugging everything faster that previous time.
     [0x1]            : 0000028e`d5529388  77 68 6f 61 6d 69 00 73-01 00 00 00 04 5d 88 8a  whoami.s.....]..
     [0x2]            : 0000028e`d5529398  eb 1c c9      
 ```
+
+
+## drvier load
+```
+RtlInitUnicodeString
+NtLoadDriver
+IopLoadDriverImage
+db poi(@rcx+8)
+```
