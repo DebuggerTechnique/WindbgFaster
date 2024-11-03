@@ -1,6 +1,19 @@
 # WindbgFaster
 Let's debugging everything faster that previous time.
 
+## data model
+
+> https://github.com/hugsy/defcon_27_windbg_workshop/blob/main/windbg_cheatsheet.md 
+
+## install
+
+```
+input .shell within windbg
+curl https://raw.githubusercontent.com/DebuggerTechnique/WindbgFaster/refs/heads/main/JsLib.js -o c:\users\%username%\jslib.js
+.scriptload c:\users\%username%\jslib.js
+```
+
+
 ## RPC
 > parse rpcrt4!NdrServerCall args
 > how to use?
@@ -103,6 +116,4 @@ bp nt!MmGetSystemRoutineAddress ".if(1 == 1) {.echo hit MmGetSystemRoutineAddres
 kd> bp nt!ObRegisterCallbacks
 kd> bp nt!ObUnRegisterCallbacks
 ```
-
-
 
