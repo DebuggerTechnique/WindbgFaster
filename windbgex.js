@@ -6,22 +6,31 @@ uodate datetime : 2024-11-02
 
 function initializeScript()
 {
-    Usage();
-
     return [
         new host.functionAlias(__constants,'exttest'),
         new host.functionAlias(test,'test'),
         new host.functionAlias(__listprocess,'lp'),
         new host.functionAlias(__switchto,'swt'),
         new host.functionAlias(__ttd_jump,'ttdseek'),
+        new host.functionAlias(usage,'help_windbgex'),
+        new host.functionAlias(__load_type,'ldt'),
+        new host.functionAlias(__list_types,'lt'),
+        new host.functionAlias(__add_vars,'registervars'),
+        new host.functionAlias(__unmarshal,'unmarshal'),
         new host.apiVersionSupport(1, 7)
         ];
 }
 
-function Usage(){
-    print("!lp\n")
-    print("!switchto(\"lsass.exe\")\n")
-    print("!switchto2 [pid]\n")
+function usage(){
+    print("!lp  \t list process \n")
+    print("!swt(\"lsass.exe\")         switch to the specified process context only for kernel context\n")
+    print("!swt [pid]                 switch to the specified process context only for kernel context\n")
+    print("!ttdseek(sequence,step)   !ttdseek(0x1A,0)  \n")
+    print("!help_windbgex   print this help usage information\n")
+    print("!ldt(filename,module)      load_type  \n")
+    print("!lt      list types  \n")
+    print("!unmarshal(structname, address) \n")
+    print("!registervars   register @$vars\n")
 }
 
 class IGlobal{
@@ -78,12 +87,20 @@ function __switchto(process){
     return host.currentSession.Processes.Where(x => x.Id == process).First().SwitchTo()
 }
 /*
-.scriptload SynTypes.js
-dx Debugger.Utility.Analysis.SyntheticTypes.ReadHeader("D:\\Desktop\\petools\\windbgExt\\js\\demo-struct.h","ntdll")
-dx -r2 Debugger.Utility.Analysis.SyntheticTypes.CreateInstance("_test",@rbx)
-*/
-function __unmarshal(header,structname,address){
 
+*/
+function __load_type(filename,module){
+    print(`"dx Debugger.Utility.Analysis.SyntheticTypes.ReadHeader(\"${filename}\",\"${module}\")"`);
+    return new IGlobal().ishellexec.ExecuteCommand(`"dx Debugger.Utility.Analysis.SyntheticTypes.ReadHeader(\"${filename}\",\"${module}\")"`);
+}
+
+function __unmarshal(structname,address){
+    print(`"dx Debugger.Utility.Analysis.SyntheticTypes.CreateInstance(\"${structname}\",${address})"`);
+    return new IGlobal().ishellexec.ExecuteCommand(`"dx Debugger.Utility.Analysis.SyntheticTypes.CreateInstance(\"${structname}\",${address})"`);
+}
+
+function __list_types(){
+    return new IGlobal().ishellexec.ExecuteCommand("dx -g Debugger.Utility.Analysis.SyntheticTypes.TypeTables.Select(x => new { module = x.Module.Name, header = x.Header, types = x.Types.Select(t => t.Name) })")
 }
 
 function __constants()

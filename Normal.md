@@ -30,6 +30,9 @@ ba r4 [address]
 .scriptload SynTypes.js
 dx Debugger.Utility.Analysis.SyntheticTypes.ReadHeader("D:\\Desktop\\petools\\windbgExt\\js\\demo-struct.h","ntdll")
 dx -r2 Debugger.Utility.Analysis.SyntheticTypes.CreateInstance("_test",@rbx)
+
+
+dx -r3 Debugger.Utility.Analysis.SyntheticTypes.TypeTables.Select(x => new { module = x.Module.Name, header = x.Header, types = x.Types.Select(t => t.Name).Flatten() })
 ```
 
 
