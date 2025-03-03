@@ -53,6 +53,8 @@ function __ttd_jump(seq,step){
 function __add_vars(){
     var ishell = host.namespace.Debugger.Utility.Control;
     
+    ishell.ExecuteCommand("dx -r0 @$getsym = (x => Debugger.Utility.Control.ExecuteCommand(\".printf\"%y\", \" + ((__int64)x).ToDisplayString(\"x\"))[0])");
+
     // https://www.geoffchappell.com/studies/windows/km/ntoskrnl/inc/ntos/ps/eprocess/mitigationflags.htm
     ishell.ExecuteCommand("dx @$vars.Add(\"process_mitigations_ControlFlowGuardEnabled\",0x1)");
     ishell.ExecuteCommand("dx @$vars.Add(\"process_mitigations_ControlFlowGuardExportSuppressionEnabled\",0x2)");

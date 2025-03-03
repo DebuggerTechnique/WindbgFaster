@@ -56,6 +56,18 @@ dx -g @$cursession.Processes.Select(x => new { name = x.Name, pid = x.KernelObje
 ```
 dx -r1 @$cursession.Processes.Where(p => (p.KernelObject.MitigationFlags & 0x20) == 0)
 
+dx @$cursession.Processes.Where(x => x.KernelObject.MitigationFlags3Values.DisallowFsctlSystemCalls)
+
+dx @$cursession.Processes.Where(x => x.KernelObject.MitigationFlags2Values.CetUserShadowStacks || x.KernelObject.MitigationFlags2Values.AuditCetUserShadowStacks)
+
+dx @$cursession.Processes.Where(x => x.KernelObject.MitigationFlagsValues.DisallowWin32kSystemCalls)
+
+dx @$cursession.Processes.Where(x => x.KernelObject.MitigationFlagsValues.EnableModuleTamperingProtection)
+
+dx @$cursession.Processes.Where(x => x.KernelObject.MitigationFlagsValues.ControlFlowGuardEnabled)
+
+// XtendedControlFlowGuard
+dx @$cursession.Processes.Where(x => x.KernelObject.MitigationFlags2Values.XtendedControlFlowGuard_Deprecated)
 
 ```
 
@@ -63,6 +75,8 @@ dx -r1 @$cursession.Processes.Where(p => (p.KernelObject.MitigationFlags & 0x20)
 ## Handle
 ```
 dx -r1 @$curprocess.Io.Handles
+
+dx -r1 @$cursession.Processes[4].Io.Handles.Where(handle => (handle.Type == "File")).Select(file => file.Object.UnderlyingObject.FileName)
 ```
 
 ### Process

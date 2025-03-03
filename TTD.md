@@ -47,6 +47,19 @@ dx -g @$curprocess.TTD.Events.Where(x => x.Type == "ThreadCreated" || x.Type == 
 
 ## ttd call
 
+### xfg
+
+```
+
+```
+
+### cfg
+```
+
+```
+
+
+
 ### Process
 ```
 // create process  parameters
