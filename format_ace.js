@@ -8,7 +8,7 @@ function initializeScript() {
 }
 
 function show_format_mask(mask) {
-    let maskValue = parseInt(mask, 16);
+    let maskValue = parseInt(mask, 10);
     host.diagnostics.debugLog(`Parsing ACL Mask: 0x${maskValue.toString(16).padStart(8, '0')}\n\n`);
 
     const ACCESS_RIGHTS = {
@@ -16,12 +16,14 @@ function show_format_mask(mask) {
         0x40000000: "GENERIC_EXECUTE",
         0x20000000: "GENERIC_WRITE",
         0x10000000: "GENERIC_READ",
-        0x00010000: "WRITE_OWNER",
-        0x00020000: "WRITE_DAC",
-        0x00040000: "READ_CONTROL",
-        0x00080000: "DELETE",
-        0x000F0000: "STANDARD_RIGHTS_ALL",
-        0x000F01FF: "SPECIFIC_RIGHTS_ALL",
+        0x00100000: "SYNCHRONIZE",
+        0x00080000: "WRITE_OWNER",
+        0x00040000: "WRITE_DAC",
+        0x00020000: "READ_CONTROL",
+        0x00010000: "DELETE",
+        0x000F0000: "STANDARD_RIGHTS_REQUIRED",
+        0x001F0000: "STANDARD_RIGHTS_ALL",
+        0x0000FFFF: "SPECIFIC_RIGHTS_ALL",
         0x00000100: "ACCESS_SYSTEM_SECURITY",
         0x00000200: "MAXIMUM_ALLOWED",
         0x00000001: "FILE_READ_DATA",
