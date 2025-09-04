@@ -2,6 +2,17 @@
 > https://windows-internals.com/lookaside-list-forensics/   
 > Processes, thread, modules, DPCs, IRPs 
 
+## for
+```
+用于对链表或连续的内存进行遍历
+使用.for语句
+1. 给定起始地址
+2. 明确大小
+3. 给定类型
+.for(r $t0=[address]; poi(@$t0) != 0; r $t0=@$t0+[size]) {dt type @$t0;}
+.for(r $t0=0x7ff688dac000; poi(@$t0) != 0; r $t0=@$t0+10) {dt loleye!loleye::globalbridge::_HttpHeaders @$t0;}
+```
+
 ## HandleTable
 ```
 dx -g Debugger.Utility.Collections.FromListEntry(*(nt!_LIST_ENTRY*)&nt!HandleTableListHead,"nt!_HANDLE_TABLE","HandleTableList")
